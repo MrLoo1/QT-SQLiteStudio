@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/SQLiteStudio">
+        <file>Resources/images/DB_remote.ico</file>
+        <file>Resources/images/confirm.png</file>
+        <file>Resources/images/error.png</file>
+        <file>Resources/images/finish.png</file>
+        <file>Resources/images/warning.png</file>
+        <file>Resources/images/info.png</file>
+        <file>Resources/images/clear.png</file>
+        <file>Resources/images/tab_close.png</file>
+        <file>Resources/images/tab_close_h.png</file>
+    </qresource>
+</RCC>
