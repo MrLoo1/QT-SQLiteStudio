@@ -143,6 +143,9 @@ private:
 	/*是否需要保存*/
 	bool maybeSave();
 
+	/*设置seedb页按钮*/
+	void setSeeDBBtn(bool enable);
+
 private:
 	QSettings *						m_pConfigIni;				// ini文件，用来保存DB路径
 

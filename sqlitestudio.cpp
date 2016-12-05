@@ -91,6 +91,8 @@ void SQLiteStudio::setupUi()
 	ui.btnClearSeeDB->setIcon(QIcon(RS_ICON_Clear));
 
 	ui.swTableData->installEventFilter(this);
+
+	setSeeDBBtn(false);
 }
 
 /* 创建文件下拉列表 */
@@ -317,6 +319,7 @@ void SQLiteStudio::doSqlFileCurrentChanged()
 	addFileName(ui.cbCreateDB, m_slCreateDBFileName
 		, sCreateDBFileName, SETTING_NAME_CREATEDB_FIELPATH);
 	ui.cbCreateDB->setCurrentText(sCreateDBFileName);
+	m_sCreateDBFileName = sCreateDBFileName;
 }
 
 void SQLiteStudio::doCreateDBCurrentChanged()
@@ -560,7 +563,7 @@ void SQLiteStudio::loadSeeDBTable()
 			pCurItem = pListWidgetItem;
 		}
 	}
-
+	setSeeDBBtn(true);
 	if (pCurItem) ui.lwDBStructure->setCurrentItem(pCurItem);
 	//ui.lwDBStructure->setCurrentRow(0);
 }
@@ -1010,4 +1013,14 @@ void SQLiteStudio::doInternalButtonClicked(const QString sButtonId)
 	pTbv = qobject_cast<QTableView*>(pBtn->userObject());
 	deleteTableData(pTbv, pBtn);
 	m_hashTableNameBtn.remove(sButtonId);
+}
+
+/*设置seedb页按钮*/
+void SQLiteStudio::setSeeDBBtn(bool enable)
+{
+	ui.btnRefreshSeeDB->setEnabled(enable);
+	ui.btnInsert->setEnabled(enable);
+	ui.btnDelete->setEnabled(enable);
+	ui.btnCommit->setEnabled(enable);
+	ui.btnRevert->setEnabled(enable);
 }
