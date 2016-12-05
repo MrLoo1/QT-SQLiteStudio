@@ -219,7 +219,7 @@ void SQLiteStudio::doBtnSelectSeeDBClicked()
 		this, KSL("选择数据库"), m_sSeeDBFileName, tr("sql (*.db)"));
 	if (!sSelectSeeDBFileName.isEmpty() && m_sSeeDBFileName != sSelectSeeDBFileName)
 	{
-		ui.cbSeeDB->setCurrentText(m_sSeeDBFileName);
+		ui.cbSeeDB->setCurrentText(sSelectSeeDBFileName);
 		doSeeDBCurrentChanged();
 	}
 }
@@ -976,7 +976,7 @@ void SQLiteStudio::closeEvent(QCloseEvent *event)
 
 bool SQLiteStudio::maybeSave()  // 是否需要保存
 {
-	if (m_pTextDocument->isModified()) { // 如果文档被更改过
+	if (m_pTextDocument && m_pTextDocument->isModified()) { // 如果文档被更改过
 		QMessageBox box;
 		box.setWindowTitle(QStringLiteral("SQL文件"));
 		box.setText(QStringLiteral("是否保存对“%1”的更改？")
