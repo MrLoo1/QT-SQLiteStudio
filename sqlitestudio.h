@@ -21,12 +21,6 @@ public:
 	SQLiteStudio(QWidget *parent = 0);
 	~SQLiteStudio();
 
-	/*添加新的子版本*/
-	void addDB(QList<QMap<int, Qt::CheckState> > list, const QString& strName = QString());
-
-	/*修改子版本*/
-	bool updateDB(QList<QMap<int, Qt::CheckState> > list, const QString& strName = QString());
-
 	/*事件过滤器*/
 	bool eventFilter(QObject *, QEvent *);
 

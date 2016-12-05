@@ -356,55 +356,6 @@ void SQLiteStudio::documentWasModified()
 	ui.wCreateDb->setWindowModified(m_pTextDocument->isModified());
 }
 
-/*添加新的子版本*/
-void SQLiteStudio::addDB(QList<QMap<int, Qt::CheckState> > list, const QString& strName)
-{
-
-}
-
-bool SQLiteStudio::updateDB(QList<QMap<int, Qt::CheckState> > list, const QString& strName)
-{
-	/*QSqlQuery* oSQLQuery = new QSqlQuery(m_sdbSeeDB);
-	
-	QString strTemp = KSL("DELETE FROM VersionSelect WHERE versionName='%1'").arg(strName);
-	bool bIsSuc = oSQLQuery->exec(strTemp);
-
-	int iID = 0;
-	QHashIterator<QString, QSqlTableModel*> itTableModel(m_hashTableDataModel);
-	QListIterator<QMap<int, Qt::CheckState>> i(list);
-	while (i.hasNext())
-	{
-		itTableModel.next();
-		QSqlTableModel* currentModel = itTableModel.value();
-		QMap<int, Qt::CheckState> map = i.next();
-
-		QMap<int, Qt::CheckState>::iterator it;
-		for (it = map.begin(); it != map.end(); ++it)
-		{
-			if (it.value() == Qt::Checked)
-			{
-				strTemp = QObject::tr("INSERT INTO VersionSelect VALUES('%1', '%2',%3)").arg(strName).arg(currentModel->tableName()).arg(it.key());
-				bIsSuc = oSQLQuery->exec(strTemp);
-				iID++;
-			}
-		}
-
-		strTemp = QObject::tr("EXISTS (SELECT *  FROM VersionSelect  WHERE %1.id = VersionSelect.indexID  AND name = '%2'  AND versionName = '%3') ")
-			.arg(currentModel->tableName()).arg(currentModel->tableName()).arg(strName);
-		currentModel->setFilter(strTemp);
-		currentModel->select();
-	}
-	commitDBSlot();
-
-	if (oSQLQuery)
-	{
-		delete oSQLQuery;
-		oSQLQuery = nullptr;
-	}
-*/
-	return true;
-}
-
 void SQLiteStudio::selectedSeeDB()
 {
 	if (!m_sSeeDBFileName.isEmpty())
@@ -707,6 +658,7 @@ bool SQLiteStudio::loadTextEditor(const QString& sFilePath)
 			m_pTextDocument = new QTextDocument;
 		}
 		m_pTextDocument->setPlainText(sText);
+		m_pTextDocument->setModified(false);
 		ui.edSql->setDocument(m_pTextDocument);
 		file.close();
 		m_sqlFileWatcher.removePaths(m_sqlFileWatcher.files());
@@ -985,7 +937,7 @@ bool SQLiteStudio::eventFilter(QObject *obj, QEvent * evt)
 			{
 				key2 = ev->key();
 			}
-			if (key1 == Qt::Key_Control && key2 == Qt::Key_F)
+			if ((key1 == Qt::Key_Control && key2 == Qt::Key_F) || (key2 == Qt::Key_Control && key1 == Qt::Key_F))
 			{
 				doActQryTable();
 			}
