@@ -1,7 +1,7 @@
 #include "queryseedb.h"
-#include "msgdlg.h"
 #include "common.h"
 #include <QComboBox>
+#include <QMessageBox>
 QuerySeeDB::QuerySeeDB(const QStringList& fieldnames, QString* qrytext, QString* fieldname, QWidget *parent)
 	: QDialog(parent), m_vFieldnames(fieldnames), m_sQryText(qrytext), m_sFieldname(fieldname)
 {
@@ -64,7 +64,7 @@ void QuerySeeDB::doBtnQryClicked()
 {
 	if (m_sFieldname->isEmpty())
 	{
-		MsgDlg::error(KSL("请选择列名"), KSL("查询错误"));
+		QMessageBox::critical(this, KSL("查询错误"), KSL("请选择列名"));
 		return;
 	}
 	accept();
