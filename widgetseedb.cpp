@@ -12,6 +12,7 @@
 #include <QSqlError>
 #include <QSettings>
 #include <QDebug>
+#include <QCheckBox>
 
 widgetSeeDB::widgetSeeDB(QWidget *parent, QSettings* set, QLineEdit* edPw)
 	: QWidget(parent), m_pConfigIni(set), m_pedPw(edPw)
@@ -39,14 +40,14 @@ void widgetSeeDB::setupUi()
 	// 设置表名列表
 	ui.lwDBStructure->setContextMenuPolicy(Qt::ActionsContextMenu);
 	QAction* act = new QAction(this);
-	act->setText(KSL("删除"));
+	act->setText(QSL("删除"));
 	act->setEnabled(true);
 	ui.lwDBStructure->addAction(act);
 	connect(act, SIGNAL(triggered(bool)), this, SLOT(doActDropTable()));
 
 	ui.swTableData->setContextMenuPolicy(Qt::ActionsContextMenu);
 	QAction* actQry = new QAction(this);
-	actQry->setText(KSL("查找"));
+	actQry->setText(QSL("查找"));
 	actQry->setEnabled(true);
 	ui.swTableData->addAction(actQry);
 	connect(actQry, SIGNAL(triggered(bool)), this, SLOT(doActQryTable()));
@@ -54,7 +55,7 @@ void widgetSeeDB::setupUi()
 	// 设置表格行高
 	m_nTableDataRowHeight = ROWHEIGHT_DEF;
 
-	ui.btnClearSeeDB->setIcon(QIcon(RS_ICON_Clear));
+	ui.btnSelectSeeDB->setIcon(QIcon(RS_ICON_OPENFILE));
 
 	ui.swTableData->installEventFilter(this);
 
@@ -79,7 +80,7 @@ void widgetSeeDB::setupSignalSlots()
 	connect(ui.btnRevert, SIGNAL(clicked()), this, SLOT(doBtnRevertClicked()));
 	connect(ui.btnClose, SIGNAL(clicked()), this, SLOT(doBtnCloseClicked()));
 
-	connect(ui.btnClearSeeDB, SIGNAL(clicked()), this, SLOT(doClearFileNameList()));
+	connect(ui.chbLock, SIGNAL(clicked(bool)), this, SLOT(doChbLockChecked(bool)));
 }
 
 /* 创建文件下拉列表 */
@@ -91,8 +92,9 @@ void widgetSeeDB::createFileDropList(
 	cb->clear();
 	for (int i = 0; i < slFileList.size(); ++i)
 	{
-		cb->addItem(slFileList[i], slFileList[i]);
+		cb->insertItem(0,slFileList[i], slFileList[i]);
 	}
+	cb->addItem(QIcon(RS_ICON_Clear), QSL("清楚下拉框"), QSL("清楚下拉框"));
 	cb->setCurrentIndex(-1);
 	cb->blockSignals(false);
 }
@@ -111,18 +113,18 @@ void widgetSeeDB::doActDropTable()
 		KTabButton* pBtn = m_hashTableNameBtn.value(sTableName);
 		if (pBtn) pTbv = qobject_cast<QTableView*>(pBtn->userObject());
 		if (pTbv) pStm = qobject_cast<QSqlTableModel*>(pTbv->model());
-		if (QMessageBox::information(this, KSL("drop table"), KSL("Are you sure want to drop table [%1]?").arg(sTableName)
+		if (QMessageBox::information(this, QSL("drop table"), QSL("Are you sure to drop table [%1]?").arg(sTableName)
 			, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
 		{
 			QSqlQuery oSqlQuery(m_sdbSeeDB);
-			QString sSQL = KSL("drop table %1;").arg(sTableName);
+			QString sSQL = QSL("drop table %1;").arg(sTableName);
 
 			// 解除模型绑定
 			if (pStm) pStm->clear();
 
 			if (!oSqlQuery.exec(sSQL))
 			{
-				QMessageBox::information(this, KSL("drop table"), KSL("%1").arg(oSqlQuery.lastError().text()));
+				QMessageBox::information(this, QSL("drop table"), QSL("%1").arg(oSqlQuery.lastError().text()));
 				// 重新绑定模型
 				if (pStm)
 				{
@@ -136,7 +138,7 @@ void widgetSeeDB::doActDropTable()
 			else
 			{
 				doBtnRefreshSeeDBClicked();
-				QMessageBox::information(this, KSL("drop table"), KSL("Drop table [%1] succes!").arg(sTableName));
+				QMessageBox::information(this, QSL("drop table"), QSL("Drop table [%1] succes!").arg(sTableName));
 			}
 		}
 	}
@@ -147,8 +149,10 @@ void widgetSeeDB::doActQryTable()
 	QString qrytext;
 	QStringList fieldnames;
 	QString fieldname;
+	if (m_sCurSelectTableName.isEmpty()) return;
 	QSqlTableModel* sqlTableModel = getSqlTableModel(m_sCurSelectTableName);
-	QTableView* pTBV = qobject_cast<QTableView*>(m_hashTableNameBtn[m_sCurSelectTableName]->userObject());
+	if (sqlTableModel)
+		QTableView* pTBV = qobject_cast<QTableView*>(m_hashTableNameBtn[m_sCurSelectTableName]->userObject());
 	if (sqlTableModel)
 	{
 		for (int i = 0; i < sqlTableModel->columnCount(); i++)
@@ -159,21 +163,22 @@ void widgetSeeDB::doActQryTable()
 	QuerySeeDB* qryDlg = new QuerySeeDB(fieldnames, &qrytext, &fieldname, this);
 	if (qryDlg->exec() == QDialog::Accepted)
 	{
-		sqlTableModel->setFilter(KSL("%1 = \'%2\'").arg(fieldname).arg(qrytext));
+		sqlTableModel->setFilter(QSL("%1 = \'%2\'").arg(fieldname).arg(qrytext));
 		sqlTableModel->select();
 	}
 }
 
 void widgetSeeDB::doBtnCloseClicked()
 {
-	m_sSeeDBFileName = "";
 	if (m_sdbSeeDB.isOpen())
 	{
 		m_sdbSeeDB.close();
 	}
-	ui.cbSeeDB->setCurrentText(m_sSeeDBFileName);
+	ui.cbSeeDB->setCurrentIndex(-1);
 	ui.lwDBStructure->clear();
 	clearTableData();
+	m_sSeeDBFileName = "";
+	m_sCurSelectTableName = "";
 	setSeeDBBtn(false);
 }
 
@@ -239,10 +244,11 @@ void widgetSeeDB::showTableData(const QString& sTableName)
 
 		// 设置行高
 		pTBV->verticalHeader()->setDefaultSectionSize(m_nTableDataRowHeight);
+		int nCount = getSqlTableModel(m_sCurSelectTableName)->rowCount();
+		pBtn->setText(sTableName + QSL("(%1行)").arg(nCount));
 	}
-
-	int nCount = getSqlTableModel(m_sCurSelectTableName)->rowCount();
-	ui.lbTableStatus->setText(KSL("记录数：") + QString("%1").arg(nCount));
+	setSeeDBBtn(true);
+	doChbLockChecked(ui.chbLock->isChecked());
 }
 
 /* 取sql表格模型 */
@@ -271,7 +277,6 @@ bool widgetSeeDB::clearTableData()
 		pTbv = qobject_cast<QTableView*>(pBtn->userObject());
 		deleteTableData(pTbv, pBtn);
 	}
-	ui.lbTableStatus->clear();
 	m_hashTableNameBtn.clear();
 	return true;
 }
@@ -292,12 +297,21 @@ bool widgetSeeDB::deleteTableData(QTableView* pTbv, KTabButton* pBtn)
 
 void widgetSeeDB::doSeeDBFileNameEditingFinished()
 {
+	if (ui.cbSeeDB->currentIndex() == ui.cbSeeDB->count() - 1)
+	{
+		return;
+	}
 	doSeeDBCurrentChanged();
 }
 
 /* 查看DB路径修改 */
 void widgetSeeDB::doSeeDBCurrentChanged()
 {
+	if (ui.cbSeeDB->currentIndex() == ui.cbSeeDB->count() - 1)
+	{
+		doClearFileNameList();
+		return;
+	}
 	QString sSeeDBFileName = ui.cbSeeDB->currentText();
 	if (sSeeDBFileName.isEmpty() || m_sSeeDBFileName == sSeeDBFileName) return;
 	if (sSeeDBFileName.right(3) != ".db") return;
@@ -322,20 +336,28 @@ void widgetSeeDB::addFileName(
 	}
 
 	if (cb->findData(sFileName) < 0)
-		cb->addItem(sFileName, sFileName);
+	{
+		cb->blockSignals(true);
+		cb->insertItem(0, sFileName, sFileName);
+		cb->blockSignals(false);
+	}
 }
 
 /* 清空文件列表 */
 void widgetSeeDB::doClearFileNameList()
 {
-	if (QMessageBox::information(this, KSL("清空文件列表"), KSL("确定清空[%1]文件列表吗？").arg(KSL("查看DB")),
+	ui.cbSeeDB->blockSignals(true);
+	if (QMessageBox::information(this, QSL("清空文件列表"), QSL("确定清空[%1]文件列表吗？").arg(QSL("查看DB")),
 		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
 	{
 		m_slSeeDBFileName.clear();
 		ui.cbSeeDB->clear();
-
+		ui.cbSeeDB->addItem(QIcon(RS_ICON_Clear), QSL("清楚下拉框"), QSL("清楚下拉框"));
 		m_pConfigIni->setValue(SETTING_NAME_SEEDB_FIEL_PATH, "");
 	}
+	
+	ui.cbSeeDB->setCurrentIndex(-1);
+	ui.cbSeeDB->blockSignals(false);
 }
 
 void widgetSeeDB::selectedSeeDB()
@@ -345,7 +367,7 @@ void widgetSeeDB::selectedSeeDB()
 		ui.cbSeeDB->setCurrentText(m_sSeeDBFileName);
 		if (!QFile::exists(m_sSeeDBFileName))
 		{
-			QMessageBox::critical(this, KSL("加载错误"), KSL("数据库[%1]不存在.").arg(m_sSeeDBFileName));
+			QMessageBox::critical(this, QSL("加载错误"), QSL("数据库[%1]不存在.").arg(m_sSeeDBFileName));
 			return;
 		}
 
@@ -359,7 +381,7 @@ void widgetSeeDB::selectedSeeDB()
 		qDebug() << m_sdbSeeDB.databaseName() << "  " << m_sdbSeeDB.password();
 		if (!m_sdbSeeDB.open())
 		{
-			QMessageBox::critical(this, KSL("打开失败"), KSL("打开数据库[%1]失败!\n失败原因:%2")
+			QMessageBox::critical(this, QSL("打开失败"), QSL("打开数据库[%1]失败!\n失败原因:%2")
 				.arg(m_sSeeDBFileName)
 				.arg(m_sdbSeeDB.lastError().text()));
 		}
@@ -376,19 +398,18 @@ void widgetSeeDB::loadSeeDBTable()
 	QString sCurSelectTableName;
 	QListWidgetItem* pCurItem = ui.lwDBStructure->currentItem();
 	if (pCurItem) sCurSelectTableName = pCurItem->data(Qt::DisplayRole).toString();
-
 	// 加载DB
 	pCurItem = nullptr;
 	ui.lwDBStructure->clear();
 	clearTableData();
 	QSqlQuery oSqlQuery(m_sdbSeeDB);
-	QString strList = KSL("select name from sqlite_master where type = 'table'");
+	QString strList = QSL("select name from sqlite_master where type = 'table'");
 	if (!oSqlQuery.exec(strList))
 	{
-		QString sErrorInfo = KSL("加载数据库表列表：执行SQL语句错误!");
-		QString sErrorMsg = KSL("\n错误原因：") + oSqlQuery.lastError().text();
-		QString sSQLTitle = KSL("\nSQL语句：");
-		QString sSqlBegin = KSL("\n<----------------------------------------------------------------------------------------->\n");
+		QString sErrorInfo = QSL("加载数据库表列表：执行SQL语句错误!");
+		QString sErrorMsg = QSL("\n错误原因：") + oSqlQuery.lastError().text();
+		QString sSQLTitle = QSL("\nSQL语句：");
+		QString sSqlBegin = QSL("\n<----------------------------------------------------------------------------------------->\n");
 		QString sSql = strList;
 		QStringList slSql = sSql.split("\n", QString::SkipEmptyParts);
 		for (int j = 0; j < slSql.size(); ++j)
@@ -399,9 +420,10 @@ void widgetSeeDB::loadSeeDBTable()
 			if (sSQL.isEmpty()) slSql.removeAt(j);
 		}
 		sSql = slSql.join("\n");
-		QString sSqlEnd = KSL("\n<----------------------------------------------------------------------------------------->");
+		QString sSqlEnd = QSL("\n<----------------------------------------------------------------------------------------->");
 		sSql = sSqlBegin + sSql + sSqlEnd;
-		QMessageBox::critical(this, KSL("load db"), sErrorInfo + sErrorMsg + sSQLTitle + sSql);
+		QMessageBox::critical(this, QSL("load db"), sErrorInfo + sErrorMsg + sSQLTitle + sSql);
+		return;
 	}
 
 	while (oSqlQuery.next())
@@ -416,7 +438,6 @@ void widgetSeeDB::loadSeeDBTable()
 			pCurItem = pListWidgetItem;
 		}
 	}
-	setSeeDBBtn(true);
 
 	if (pCurItem) ui.lwDBStructure->setCurrentItem(pCurItem);
 }
@@ -424,7 +445,24 @@ void widgetSeeDB::loadSeeDBTable()
 void widgetSeeDB::doSwitchShowTable()
 {
 	KTabButton* pTBN = qobject_cast<KTabButton*> (sender());
-	showTableData(pTBN->text());
+	QStringList slFile = pTBN->text().split("(", QString::SkipEmptyParts);
+	showTableData(slFile.front());
+}
+
+void widgetSeeDB::doChbLockChecked(bool checked)
+{
+	if (m_sCurSelectTableName.isEmpty()) return;
+
+	if (checked == true)
+	{
+		dynamic_cast<QTableView*>(ui.swTableData->currentWidget())->setEditTriggers(QAbstractItemView::NoEditTriggers);
+		setSeeDBBtn(!checked,true);
+	}
+	else
+	{
+		dynamic_cast<QTableView*>(ui.swTableData->currentWidget())->setEditTriggers(QAbstractItemView::CurrentChanged);
+		setSeeDBBtn(!checked, true);
+	}
 }
 
 void widgetSeeDB::doCommitDBSlot()
@@ -432,13 +470,13 @@ void widgetSeeDB::doCommitDBSlot()
 	QSqlTableModel* pSqlTM = getSqlTableModel(m_sCurSelectTableName);
 	if (pSqlTM)
 		if (!pSqlTM->submit())
-			QMessageBox::information(this, KSL("提交"), KSL("%1").arg(pSqlTM->lastError().databaseText()));
+			QMessageBox::information(this, QSL("提交"), QSL("%1").arg(pSqlTM->lastError().databaseText()));
 }
 
 void widgetSeeDB::doBtnSelectSeeDBClicked()
 {
 	QString sSelectSeeDBFileName = QFileDialog::getOpenFileName(
-		this, KSL("选择数据库"), m_sSeeDBFileName, tr("sql (*.db)"));
+		this, QSL("选择数据库"), m_sSeeDBFileName, tr("sql (*.db)"));
 	if (!sSelectSeeDBFileName.isEmpty() && m_sSeeDBFileName != sSelectSeeDBFileName)
 	{
 		ui.cbSeeDB->setCurrentText(sSelectSeeDBFileName);
@@ -480,11 +518,12 @@ void widgetSeeDB::doBtnDeleteClicked()
 void widgetSeeDB::doBtnCommitClicked()
 {
 	QSqlTableModel* sqlTableModel = getSqlTableModel(m_sCurSelectTableName);
-	if (sqlTableModel != nullptr)
+	if (sqlTableModel != nullptr && (QMessageBox::information(this, QSL("提交修改"), QSL("确定保存对[%1]表的修改吗？").arg(m_sCurSelectTableName),
+		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes))
 	{
 		if (!sqlTableModel->submitAll())
 		{
-			QMessageBox::information(this, KSL("提交"), KSL("%1").arg(sqlTableModel->lastError().text()));
+			QMessageBox::information(this, QSL("提交"), QSL("%1").arg(sqlTableModel->lastError().text()));
 		}
 		doCommitDBSlot();
 	}
@@ -493,7 +532,8 @@ void widgetSeeDB::doBtnCommitClicked()
 void widgetSeeDB::doBtnRevertClicked()
 {
 	QSqlTableModel* sqlTableModel = getSqlTableModel(m_sCurSelectTableName);
-	if (sqlTableModel != nullptr)
+	if (sqlTableModel != nullptr && (QMessageBox::information(this, QSL("撤销修改"), QSL("确定撤销对[%1]表的修改吗？").arg(m_sCurSelectTableName),
+		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes))
 	{
 		sqlTableModel->revertAll();
 	}
@@ -549,15 +589,23 @@ void widgetSeeDB::doInternalButtonClicked(const QString sButtonId)
 	pTbv = qobject_cast<QTableView*>(pBtn->userObject());
 	deleteTableData(pTbv, pBtn);
 	m_hashTableNameBtn.remove(sButtonId);
+	if (m_hashTableNameBtn.isEmpty())
+	{
+		m_sCurSelectTableName = "";
+		setSeeDBBtn(false,true);
+	}
 }
 
 /*设置seedb页按钮*/
-void widgetSeeDB::setSeeDBBtn(bool enable)
+void widgetSeeDB::setSeeDBBtn(bool enable, bool isCheckClick)
 {
-	ui.btnRefreshSeeDB->setEnabled(enable);
+	if (!isCheckClick)
+	{
+		ui.btnClose->setEnabled(enable);
+		ui.chbLock->setEnabled(enable);
+	}
 	ui.btnInsert->setEnabled(enable);
 	ui.btnDelete->setEnabled(enable);
 	ui.btnCommit->setEnabled(enable);
 	ui.btnRevert->setEnabled(enable);
-	ui.btnClose->setEnabled(enable);
 }

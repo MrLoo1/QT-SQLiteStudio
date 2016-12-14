@@ -36,7 +36,7 @@ private slots:
 	void doActSaveAs();
 
 	/* 清空文件列表 */
-	void doClearFileNameList();
+	void doClearFileNameList(QString);
 
 	/*sql文件改变槽*/
 	void doAfterSqlFileChange(const QString& path);

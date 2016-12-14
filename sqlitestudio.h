@@ -1,14 +1,15 @@
 #ifndef SQLITESTUDIO_H
 #define SQLITESTUDIO_H
 
-#include <qmainwindow.h>
+#include <qdialog.h>
 #include "ui_sqlitestudio.h"
 
 class QSettings;
 class widgetCreateDB;
 class widgetSeeDB;
+class Cipher;
 
-class SQLiteStudio : public QMainWindow
+class SQLiteStudio : public QDialog
 {
 	Q_OBJECT
 
@@ -22,7 +23,7 @@ private slots:
 	void doBtnCreateDBClicked();
 
 protected:
-	void closeEvent(QCloseEvent *event);
+	void closeEvent(QCloseEvent *event); // 关闭事件
 
 private:
 	/* 初始化界面 */
@@ -34,8 +35,18 @@ private:
 	/*创建ini文件*/
 	void createIni();
 
+	/*密码加密*/
+	QString encodePW(QString clearpw);
+
+	/*密码解密*/
+	QString decodePW(QString cryptpw);
+
+	/*初始化密码输入框*/
+	void initEdPW();
+
 private:
 	QSettings *				m_pConfigIni;				// ini文件，用来保存DB路径
+	Cipher*					m_pCripher;					//加密类
 
 	Ui::sqlitestudio		ui;
 

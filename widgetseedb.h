@@ -39,6 +39,9 @@ private slots:
 	void doActQryTable();
 	void doBtnCloseClicked();
 
+	/*锁定勾选框*/
+	void doChbLockChecked(bool);
+
 	/*保存数据库修改*/
 	void doCommitDBSlot();
 
@@ -87,7 +90,7 @@ private:
 	bool deleteTableData(QTableView*, KTabButton*);
 
 	/*设置seedb页按钮*/
-	void setSeeDBBtn(bool enable);
+	void setSeeDBBtn(bool enable,bool isCheckClick = false);
 
 private:
 	QSettings *						m_pConfigIni;				// ini文件，用来保存DB路径

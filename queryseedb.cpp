@@ -44,7 +44,7 @@ void QuerySeeDB::setupSignalSlots()
 /*列名combox槽*/
 void QuerySeeDB::doAfterFieldNameChange()
 {
-	ui.lbQryTip->setText(KSL("请输入要查找的[%1]列内容:").arg(ui.cbFieldName->currentText()));
+	ui.lbQryTip->setText(QSL("请输入要查找的[%1]列内容:").arg(ui.cbFieldName->currentText()));
 }
 
 /*查询combox槽*/
@@ -64,7 +64,7 @@ void QuerySeeDB::doBtnQryClicked()
 {
 	if (m_sFieldname->isEmpty())
 	{
-		QMessageBox::critical(this, KSL("查询错误"), KSL("请选择列名"));
+		QMessageBox::critical(this, QSL("查询错误"), QSL("请选择列名"));
 		return;
 	}
 	accept();

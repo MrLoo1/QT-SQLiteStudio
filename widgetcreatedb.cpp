@@ -43,16 +43,15 @@ void widgetCreateDB::setupUi()
 
 	// 创建DB保存按钮下拉菜单
 	m_menu = new QMenu(this);
-	m_actSave = new QAction(KSL("另存为"), m_menu);
+	m_actSave = new QAction(QSL("另存为"), m_menu);
 	m_menu->addAction(m_actSave);
 	ui.btnSave->setMenu(m_menu);
 
 	// 设置表格行高
 	m_nTableDataRowHeight = ROWHEIGHT_DEF;
 
-	// 清空下拉列表
-	ui.btnClearSqlFile->setIcon(QIcon(RS_ICON_Clear));
-	ui.btnClearCreateDB->setIcon(QIcon(RS_ICON_Clear));
+	ui.btnSelectCreateDB->setIcon(QIcon(RS_ICON_OPENFILE));
+	ui.btnSelectSqlFile->setIcon(QIcon(RS_ICON_OPENFILE));
 }
 
 void widgetCreateDB::setupSignalSlots()
@@ -76,10 +75,6 @@ void widgetCreateDB::setupSignalSlots()
 	connect(ui.btnRefresh, SIGNAL(clicked()), this, SLOT(doBtnRefreshClicked()));
 	connect(ui.btnSave, SIGNAL(clicked()), this, SLOT(doBtnSaveClicked()));
 
-	// 清空文件列表
-	connect(ui.btnClearSqlFile, SIGNAL(clicked()), this, SLOT(doClearFileNameList()));
-	connect(ui.btnClearCreateDB, SIGNAL(clicked()), this, SLOT(doClearFileNameList()));
-
 	//sql文件监视器
 	connect(&m_sqlFileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(doAfterqlFileChange(QString)));
 }
@@ -93,8 +88,9 @@ void widgetCreateDB::createFileDropList(
 	cb->clear();
 	for (int i = 0; i < slFileList.size(); ++i)
 	{
-		cb->addItem(slFileList[i], slFileList[i]);
+		cb->insertItem(0, slFileList[i], slFileList[i]);
 	}
+	cb->addItem(QIcon(RS_ICON_Clear), QSL("清楚下拉框"), QSL("清楚下拉框"));
 	cb->setCurrentIndex(-1);
 	cb->blockSignals(false);
 }
@@ -117,23 +113,36 @@ void widgetCreateDB::doActSaveAs()
 	}
 	else
 	{
-		QMessageBox::critical(this, KSL("打开文件失败"), KSL("请检验您所输入的文件名是否正确。"));
+		QMessageBox::critical(this, QSL("打开文件失败"), QSL("请检验您所输入的文件名是否正确。"));
 		return;
 	}
 }
 
 void widgetCreateDB::doSqlFileNameEditingFinished()
 {
+	if (ui.cbSqlFile->currentIndex() == ui.cbSqlFile->count() - 1)
+	{
+		return;
+	}
 	doSqlFileCurrentChanged();
 }
 
 void widgetCreateDB::doCreateDBFileNameEditingFinished()
 {
+	if (ui.cbCreateDB->currentIndex() == ui.cbCreateDB->count() - 1)
+	{
+		return;
+	}
 	doCreateDBCurrentChanged();
 }
 
 void widgetCreateDB::doSqlFileCurrentChanged()
 {
+	if (ui.cbSqlFile->currentIndex() == ui.cbSqlFile->count() - 1)
+	{
+		doClearFileNameList(SETTING_NAME_SQL_FIELPATH);
+		return;
+	}
 	QString sCurFile = ui.cbSqlFile->currentText();
 	if (sCurFile.isEmpty() || sCurFile == m_sSqlFileName) return;
 	if (sCurFile.right(4) != ".sql") return;
@@ -142,7 +151,7 @@ void widgetCreateDB::doSqlFileCurrentChanged()
 	m_sSqlFileName = sCurFile;
 	if (!loadTextEditor(sCurFile))
 	{
-		QMessageBox::critical(this, KSL("打开文件失败"), KSL("SQL文件[%1]加载失败!").arg(sCurFile));
+		QMessageBox::critical(this, QSL("打开文件失败"), QSL("SQL文件[%1]加载失败!").arg(sCurFile));
 	}
 
 	// 重置生成db的文件路径
@@ -156,6 +165,11 @@ void widgetCreateDB::doSqlFileCurrentChanged()
 
 void widgetCreateDB::doCreateDBCurrentChanged()
 {
+	if (ui.cbCreateDB->currentIndex() == ui.cbCreateDB->count() - 1)
+	{
+		doClearFileNameList(SETTING_NAME_CREATEDB_FIELPATH);
+		return;
+	}
 	QString sCurFile = ui.cbCreateDB->currentText();
 	if (sCurFile.isEmpty() || m_sCreateDBFileName == sCurFile) return;
 	if (sCurFile.right(3) != ".db") return;
@@ -179,7 +193,11 @@ void widgetCreateDB::addFileName(
 	}
 
 	if (cb->findData(sFileName) < 0)
-		cb->addItem(sFileName, sFileName);
+	{
+		cb->blockSignals(true);
+		cb->insertItem(0,sFileName, sFileName);
+		cb->blockSignals(false);
+	}
 }
 
 void widgetCreateDB::doBtnExecClicked()
@@ -197,7 +215,7 @@ bool widgetCreateDB::createDatabase(const QString &sDBFileName, const QString &s
 	if (oFile.exists()
 		&& !oFile.remove())
 	{
-		QMessageBox::critical(this, KSL("删除db文件"), KSL("删除文件[%1]失败：\n%2")
+		QMessageBox::critical(this, QSL("删除db文件"), QSL("删除文件[%1]失败：\n%2")
 			.arg(m_sCreateDBFileName)
 			.arg(oFile.errorString()));
 		return false;
@@ -207,13 +225,13 @@ bool widgetCreateDB::createDatabase(const QString &sDBFileName, const QString &s
 		oDir.setPath(getFileDirPath(m_sCreateDBFileName));
 		if (!oDir.exists() && !oDir.mkpath(oDir.path()))
 		{
-			QMessageBox::critical(this, KSL("路径不存在"), KSL("路径[%1]不存在,且创建失败!").arg(oDir.path()));
+			QMessageBox::critical(this, QSL("路径不存在"), QSL("路径[%1]不存在,且创建失败!").arg(oDir.path()));
 			return false;
 		}
 
 		if (!oFile.open(QIODevice::ReadWrite))
 		{
-			QMessageBox::critical(this, KSL("打开文件失败"), KSL("打开文件[%1]失败：\n%2")
+			QMessageBox::critical(this, QSL("打开文件失败"), QSL("打开文件[%1]失败：\n%2")
 				.arg(m_sCreateDBFileName)
 				.arg(oFile.errorString()));
 			return false;
@@ -233,10 +251,10 @@ bool widgetCreateDB::createDatabase(const QString &sDBFileName, const QString &s
 
 	if (!db.open())
 	{
-		QMessageBox::critical(this, KSL("打开db失败"), KSL("打开数据库[%1]失败:\n%2")
+		QMessageBox::critical(this, QSL("打开db失败"), QSL("打开数据库[%1]失败:\n%2")
 			.arg(m_sCreateDBFileName)
 			.arg(db.lastError().text())
-			, KSL("打开数据库失败"));
+			, QSL("打开数据库失败"));
 		return false;
 	}
 
@@ -257,14 +275,14 @@ bool widgetCreateDB::createDatabase(const QString &sDBFileName, const QString &s
 			file.close();
 			if (szSQL.size() == 0)
 			{
-				QMessageBox::critical(this, KSL("读取文件出错"), KSL("文件不能为空且文件内要有分隔符！"));
+				QMessageBox::critical(this, QSL("读取文件出错"), QSL("文件不能为空且文件内要有分隔符！"));
 				db.close();
 				return false;
 			}
 		}
 		else
 		{
-			QMessageBox::critical(this, KSL("打不开文件"), KSL("请检验您所输入的文件名是否正确。"));
+			QMessageBox::critical(this, QSL("打不开文件"), QSL("请检验您所输入的文件名是否正确。"));
 			db.close();
 			return false;
 		}
@@ -274,9 +292,9 @@ bool widgetCreateDB::createDatabase(const QString &sDBFileName, const QString &s
 	// 启动数据库事务
 	if (!db.driver()->beginTransaction())
 	{
-		QString sInfo = KSL("失败：启动数据事务失败!\n");
-		QString sErrorMsg = KSL("错误原因:") + db.driver()->lastError().text();
-		QMessageBox::critical(this, KSL("启动事务失败"), sInfo + sErrorMsg, KSL("提示"));
+		QString sInfo = QSL("失败：启动数据事务失败!\n");
+		QString sErrorMsg = QSL("错误原因:") + db.driver()->lastError().text();
+		QMessageBox::critical(this, QSL("启动事务失败"), sInfo + sErrorMsg, QSL("提示"));
 	}
 
 	// 执行SQL语句
@@ -291,10 +309,10 @@ bool widgetCreateDB::createDatabase(const QString &sDBFileName, const QString &s
 			if (!oSQLQuery.exec(szSQL[i]))
 			{
 				QString sI = QString::number(i);
-				QString sInfo = KSL("失败：执行第") + sI + KSL("次SQL语句失败！\n");
-				QString sErrorMsg = KSL("错误原因:") + oSQLQuery.lastError().text();
-				QString sErrorSqlTitle = KSL("\n失败语句:");
-				QString sSqlBegin = KSL("\n<----------------------------------------------------------------------------------------->\n");
+				QString sInfo = QSL("失败：执行第") + sI + QSL("次SQL语句失败！\n");
+				QString sErrorMsg = QSL("错误原因:") + oSQLQuery.lastError().text();
+				QString sErrorSqlTitle = QSL("\n失败语句:");
+				QString sSqlBegin = QSL("\n<----------------------------------------------------------------------------------------->\n");
 				QString sSql = (szSQL[i]);
 				QStringList slSql = sSql.split("\n", QString::SkipEmptyParts);
 				for (int j = 0; j < slSql.size(); ++j)
@@ -305,8 +323,8 @@ bool widgetCreateDB::createDatabase(const QString &sDBFileName, const QString &s
 					if (sSQL.isEmpty()) slSql.removeAt(j);
 				}
 				sSql = slSql.join("\n");
-				QString sSqlEnd = KSL("\n<----------------------------------------------------------------------------------------->");
-				QMessageBox::critical(this, KSL("提示"), sInfo + sErrorMsg + sErrorSqlTitle + sSqlBegin + sSql + sSqlEnd);
+				QString sSqlEnd = QSL("\n<----------------------------------------------------------------------------------------->");
+				QMessageBox::critical(this, QSL("提示"), sInfo + sErrorMsg + sErrorSqlTitle + sSqlBegin + sSql + sSqlEnd);
 				n = i;
 				break;
 			}
@@ -327,13 +345,13 @@ bool widgetCreateDB::createDatabase(const QString &sDBFileName, const QString &s
 
 	if (!db.driver()->commitTransaction())
 	{
-		QString sInfo = KSL("失败：提交数据事务失败!\n");
-		QString sErrorMsg = KSL("错误原因:") + db.driver()->lastError().text();
-		QMessageBox::critical(this, KSL("提交事务"), sInfo + sErrorMsg);
+		QString sInfo = QSL("失败：提交数据事务失败!\n");
+		QString sErrorMsg = QSL("错误原因:") + db.driver()->lastError().text();
+		QMessageBox::critical(this, QSL("提交事务"), sInfo + sErrorMsg);
 	}
 
 	db.close();
-	QMessageBox::information(this, KSL("成功"), KSL("生成数据库[%1]成功!").arg(sDBFileName));
+	QMessageBox::information(this, QSL("成功"), QSL("生成数据库[%1]成功!").arg(sDBFileName));
 	ui.pbExecSql->setValue(0);
 
 	return true;
@@ -342,7 +360,7 @@ bool widgetCreateDB::createDatabase(const QString &sDBFileName, const QString &s
 void widgetCreateDB::doBtnSelectSqlFileClicked()
 {
 	QString sSelectSqlFileName = QFileDialog::getOpenFileName(
-		this, KSL("选择文件"), m_sSqlFileName, "*.sql");
+		this, QSL("选择文件"), m_sSqlFileName, "*.sql");
 	if (!sSelectSqlFileName.isEmpty() && m_sSqlFileName != sSelectSqlFileName)
 	{
 		ui.cbSqlFile->setCurrentText(sSelectSqlFileName);
@@ -401,7 +419,7 @@ bool widgetCreateDB::loadTextEditor(const QString& sFilePath)
 	}
 	else
 	{
-		QMessageBox::critical(this, KSL("打开文件失败"), KSL("打开文件失败:%1").arg(file.errorString()));
+		QMessageBox::critical(this, QSL("打开文件失败"), QSL("打开文件失败:%1").arg(file.errorString()));
 		return false;
 	}
 }
@@ -419,28 +437,27 @@ void widgetCreateDB::doBtnSaveClicked()
 		QTextStream t(&file);
 		QString sqlContext = ui.edSql->document()->toPlainText();
 		t << sqlContext;
-		QMessageBox::information(0, KSL("保存成功"), KSL("保存成功"));
+		QMessageBox::information(0, QSL("保存成功"), QSL("保存成功"));
 		file.close();
 	}
 	else
 	{
-		QMessageBox::critical(this, KSL("打不开文件"), KSL("请检验您所输入的文件名是否正确。"));
+		QMessageBox::critical(this, QSL("打不开文件"), QSL("请检验您所输入的文件名是否正确。"));
 		return;
 	}
 }
 
 /* 清空文件列表 */
-void widgetCreateDB::doClearFileNameList()
+void widgetCreateDB::doClearFileNameList(QString set)
 {
-	QToolButton* btn = qobject_cast<QToolButton*>(sender());
-	if (btn == ui.btnClearSqlFile)
+	if (set == SETTING_NAME_SQL_FIELPATH)
 	{
-		clearFileNameList(KSL("生成DB的SQL脚本"), ui.cbSqlFile,
+		clearFileNameList(QSL("生成DB的SQL脚本"), ui.cbSqlFile,
 			m_slSqlFileName, SETTING_NAME_SQL_FIELPATH);
 	}
-	else if (btn == ui.btnClearCreateDB)
+	else if (set == SETTING_NAME_CREATEDB_FIELPATH)
 	{
-		clearFileNameList(KSL("生成的DB"), ui.cbCreateDB,
+		clearFileNameList(QSL("生成的DB"), ui.cbCreateDB,
 			m_slCreateDBFileName, SETTING_NAME_CREATEDB_FIELPATH);
 	}
 }
@@ -466,21 +483,24 @@ void widgetCreateDB::clearFileNameList(
 	QStringList& slFileName,
 	const QString& sCIParamName)
 {
-	if (QMessageBox::information(this, KSL("清空文件列表"), KSL("确定清空[%1]文件列表吗？").arg(sClearFileListName),
+	cb->blockSignals(true);
+	if (QMessageBox::information(this, QSL("清空文件列表"), QSL("确定清空[%1]文件列表吗？").arg(sClearFileListName),
 		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
 	{
 		slFileName.clear();
 		cb->clear();
-
+		cb->addItem(QIcon(RS_ICON_Clear), QSL("清楚下拉框"), QSL("清楚下拉框"));
 		m_pConfigIni->setValue(sCIParamName, "");
 	}
+	cb->setCurrentIndex(-1);
+	cb->blockSignals(false);
 }
 
 /*sql文件改变槽*/
 void widgetCreateDB::doAfterSqlFileChange(const QString& path)
 {
-	if (QMessageBox::information(this, KSL("Infomation")
-		, KSL("The sql file [%1] has been changed !\nDo you want to reload it?").arg(path),
+	if (QMessageBox::information(this, QSL("Infomation")
+		, QSL("The sql file [%1] has been changed !\nDo you want to reload it?").arg(path),
 		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
 	{
 		doBtnRefreshClicked();

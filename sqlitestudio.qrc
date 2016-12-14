@@ -9,5 +9,30 @@
         <file>Resources/images/clear.png</file>
         <file>Resources/images/tab_close.png</file>
         <file>Resources/images/tab_close_h.png</file>
+        <file>Resources/images/folder.png</file>
+        <file>Resources/images/checkbox_checked.png</file>
+        <file>Resources/images/checkbox_checked_disabled.png</file>
+        <file>Resources/images/checkbox_checked_hover.png</file>
+        <file>Resources/images/checkbox_unchecked.png</file>
+        <file>Resources/images/checkbox_unchecked_disabled.png</file>
+        <file>Resources/images/checkbox_unchecked_hover.png</file>
+        <file>Resources/images/drop_arrow_down.png</file>
+        <file>Resources/images/scroll_arrow_bottom.png</file>
+        <file>Resources/images/scroll_arrow_bottom_hover.png</file>
+        <file>Resources/images/scroll_arrow_down.png</file>
+        <file>Resources/images/scroll_arrow_down_hover.png</file>
+        <file>Resources/images/scroll_arrow_left.png</file>
+        <file>Resources/images/scroll_arrow_left_hover.png</file>
+        <file>Resources/images/scroll_arrow_right.png</file>
+        <file>Resources/images/scroll_arrow_right_hover.png</file>
+        <file>Resources/images/scroll_arrow_top.png</file>
+        <file>Resources/images/scroll_arrow_top_hover.png</file>
+        <file>Resources/images/scroll_arrow_up.png</file>
+        <file>Resources/images/scroll_arrow_up_hover.png</file>
+        <file>Resources/images/spin_arrow_down.png</file>
+        <file>Resources/images/spin_arrow_up.png</file>
+    </qresource>
+    <qresource prefix="/qss">
+        <file>Resources/qss/mainwindow.qss</file>
     </qresource>
 </RCC>

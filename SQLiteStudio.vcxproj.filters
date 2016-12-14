@@ -92,6 +92,24 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_widgetseedb.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Cipher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Cipher.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Cipher.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ecbcipher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ecbcipher.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ecbcipher.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="sqlitestudio.qrc">
@@ -115,9 +133,6 @@
     <CustomBuild Include="wSeeDB.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="sqlitestudio.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="widgetcreatedb.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -127,9 +142,21 @@
     <CustomBuild Include="sqlitestudio.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="sqlitestudio.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Cipher.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ecbcipher.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shared_queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_queryseedb.h">
