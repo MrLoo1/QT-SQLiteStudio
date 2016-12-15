@@ -58,6 +58,7 @@ void widgetSeeDB::setupUi()
 	ui.btnSelectSeeDB->setIcon(QIcon(RS_ICON_OPENFILE));
 
 	ui.swTableData->installEventFilter(this);
+	ui.cbSeeDB->installEventFilter(this);
 
 	setSeeDBBtn(false);
 }
@@ -312,13 +313,16 @@ void widgetSeeDB::doSeeDBCurrentChanged()
 		doClearFileNameList();
 		return;
 	}
+
 	QString sSeeDBFileName = ui.cbSeeDB->currentText();
-	if (sSeeDBFileName.isEmpty() || m_sSeeDBFileName == sSeeDBFileName) return;
-	if (sSeeDBFileName.right(3) != ".db") return;
-	addFileName(ui.cbSeeDB, m_slSeeDBFileName
-		, sSeeDBFileName, SETTING_NAME_SEEDB_FIEL_PATH);
+	if (sSeeDBFileName.isEmpty() 
+		|| m_sSeeDBFileName == sSeeDBFileName
+		|| (sSeeDBFileName.right(3) != ".db")) 
+		return;
 	m_sSeeDBFileName = sSeeDBFileName;
-	selectedSeeDB();
+	if(selectedSeeDB())
+		addFileName(ui.cbSeeDB, m_slSeeDBFileName
+			, sSeeDBFileName, SETTING_NAME_SEEDB_FIEL_PATH);
 }
 
 /* 添加文件名到下拉列表 */
@@ -337,9 +341,9 @@ void widgetSeeDB::addFileName(
 
 	if (cb->findData(sFileName) < 0)
 	{
-		cb->blockSignals(true);
+		ui.cbSeeDB->blockSignals(true);
 		cb->insertItem(0, sFileName, sFileName);
-		cb->blockSignals(false);
+		ui.cbSeeDB->blockSignals(false);
 	}
 }
 
@@ -356,11 +360,11 @@ void widgetSeeDB::doClearFileNameList()
 		m_pConfigIni->setValue(SETTING_NAME_SEEDB_FIEL_PATH, "");
 	}
 	
-	ui.cbSeeDB->setCurrentIndex(-1);
+	ui.cbSeeDB->setCurrentIndex(ui.cbSeeDB->findData(m_sSeeDBFileName));
 	ui.cbSeeDB->blockSignals(false);
 }
 
-void widgetSeeDB::selectedSeeDB()
+bool widgetSeeDB::selectedSeeDB()
 {
 	if (!m_sSeeDBFileName.isEmpty())
 	{
@@ -368,7 +372,7 @@ void widgetSeeDB::selectedSeeDB()
 		if (!QFile::exists(m_sSeeDBFileName))
 		{
 			QMessageBox::critical(this, QSL("加载错误"), QSL("数据库[%1]不存在.").arg(m_sSeeDBFileName));
-			return;
+			return false;
 		}
 
 		// 打开数据库加载数据
@@ -384,12 +388,14 @@ void widgetSeeDB::selectedSeeDB()
 			QMessageBox::critical(this, QSL("打开失败"), QSL("打开数据库[%1]失败!\n失败原因:%2")
 				.arg(m_sSeeDBFileName)
 				.arg(m_sdbSeeDB.lastError().text()));
+			return false;
 		}
 		else{
 			loadSeeDBTable();
 		}
-
+		return true;
 	}
+	return false;
 }
 
 void widgetSeeDB::loadSeeDBTable()
@@ -574,6 +580,18 @@ bool widgetSeeDB::eventFilter(QObject *obj, QEvent * evt)
 			else if (ev->key() == key2)
 			{
 				key2 = 0;
+			}
+		}
+	}
+	else if (obj == ui.cbSeeDB)
+	{
+		if (evt->type() == QEvent::KeyPress)
+		{
+			QKeyEvent* ev = static_cast<QKeyEvent*>(evt);
+			if (ev->key() == Qt::Key_Return)
+			{
+				doSeeDBFileNameEditingFinished();
+				return true;
 			}
 		}
 	}

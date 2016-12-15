@@ -75,7 +75,7 @@ private:
 	void setupSignalSlots();
 
 	/*选择DB文件*/
-	void selectedSeeDB();
+	bool selectedSeeDB();
 
 	/*显示表中所有的数据*/
 	void showTableData(const QString& sTableName);

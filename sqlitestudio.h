@@ -46,7 +46,7 @@ private:
 
 private:
 	QSettings *				m_pConfigIni;				// ini文件，用来保存DB路径
-	Cipher*					m_pCripher;					//加密类
+	Cipher*					m_pCripher;					//加密类,策略模式
 
 	Ui::sqlitestudio		ui;
 

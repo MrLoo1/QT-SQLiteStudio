@@ -19,11 +19,6 @@
   color: rgb(0, 0, 0);
 }
 
-QMainWindow::title {
-text-align: left;/* align the text to the left */
-background: lightgray;
-padding-left:5px;
-}
 
 /*------------------------------------------------------------------------------
   ¶Ô»°¿ò´°¿Ú
@@ -371,11 +366,7 @@ background-color:#CD96CD;
 width:10px;
 margin:0.5px;
 }
-/* QProgressBar::chunk 
-{
-  background-color: rgb(255, 153, 0);
-  width: 10px;
-} */
+
 QProgressBar#loginProgress 
 {
   border: 1px solid rgb(183, 183, 183);

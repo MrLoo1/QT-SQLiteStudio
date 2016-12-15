@@ -1,4 +1,4 @@
-#include "ecbcipher.h"
+#include "ECBCipher.h"
 using namespace std;
 ECBCipher::ECBCipher(QObject *parent)
 	: Cipher(parent)
@@ -13,6 +13,10 @@ ECBCipher::~ECBCipher()
 
 CRYPTO_STATUS ECBCipher::DES_Encrypt(const QString cleartext, const QString key, QString& ciphertext)
 {
+	if (cleartext.isEmpty())
+	{
+		return ENCRYPT_SUCCESS;
+	}
 	DES_cblock keyEncrypt;
 	memset(keyEncrypt, 0, 8);
 	const char* ch = key.toLatin1().data();
@@ -53,17 +57,17 @@ CRYPTO_STATUS ECBCipher::DES_Encrypt(const QString cleartext, const QString key,
 
 	ciphertext.clear();
 	string s = string(vecCiphertext.begin(), vecCiphertext.end());
-	for (string::iterator i = s.begin(); i != s.end(); i++)
-	{
-		ciphertext += QString::fromLatin1(&(*i),1);
-		//char ccc = *i;
-		//ccc = ' ';
-	}
+	ciphertext = QString::fromLatin1(s.c_str(), s.length());
+
 	return ENCRYPT_SUCCESS;
 }
 
 CRYPTO_STATUS ECBCipher::DES_Decrypt(const QString ciphertext, const QString key, QString& cleartext)
 {
+	if (ciphertext.isEmpty())
+	{
+		return DECRYPT_SUCCESS;
+	}
 	DES_cblock keyEncrypt;
 	memset(keyEncrypt, 0, 8);
 
@@ -103,6 +107,7 @@ CRYPTO_STATUS ECBCipher::DES_Decrypt(const QString ciphertext, const QString key
 	}
 
 	cleartext.clear();
-	cleartext = QString::fromLatin1(string(vecCleartext.begin(), vecCleartext.end()).c_str());
+	string s = string(vecCleartext.begin(), vecCleartext.end());
+	cleartext = QString::fromLatin1(s.c_str());
 	return DECRYPT_SUCCESS;
 }

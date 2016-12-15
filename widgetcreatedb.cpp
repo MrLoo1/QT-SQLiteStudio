@@ -52,6 +52,9 @@ void widgetCreateDB::setupUi()
 
 	ui.btnSelectCreateDB->setIcon(QIcon(RS_ICON_OPENFILE));
 	ui.btnSelectSqlFile->setIcon(QIcon(RS_ICON_OPENFILE));
+
+	ui.cbCreateDB->installEventFilter(this);
+	ui.cbSqlFile->installEventFilter(this);
 }
 
 void widgetCreateDB::setupSignalSlots()
@@ -76,7 +79,7 @@ void widgetCreateDB::setupSignalSlots()
 	connect(ui.btnSave, SIGNAL(clicked()), this, SLOT(doBtnSaveClicked()));
 
 	//sql文件监视器
-	connect(&m_sqlFileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(doAfterqlFileChange(QString)));
+	connect(&m_sqlFileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(doAfterSqlFileChange(QString)));
 }
 
 /* 创建文件下拉列表 */
@@ -146,14 +149,16 @@ void widgetCreateDB::doSqlFileCurrentChanged()
 	QString sCurFile = ui.cbSqlFile->currentText();
 	if (sCurFile.isEmpty() || sCurFile == m_sSqlFileName) return;
 	if (sCurFile.right(4) != ".sql") return;
-	addFileName(ui.cbSqlFile, m_slSqlFileName
-		, sCurFile, SETTING_NAME_SQL_FIELPATH);
 	m_sSqlFileName = sCurFile;
 	if (!loadTextEditor(sCurFile))
 	{
-		QMessageBox::critical(this, QSL("打开文件失败"), QSL("SQL文件[%1]加载失败!").arg(sCurFile));
+		ui.cbCreateDB->blockSignals(true);
+		ui.cbCreateDB->setCurrentIndex(-1);
+		ui.cbCreateDB->blockSignals(false);
+		return;
 	}
-
+	addFileName(ui.cbSqlFile, m_slSqlFileName
+		, sCurFile, SETTING_NAME_SQL_FIELPATH);
 	// 重置生成db的文件路径
 	QString sCreateDBFileName;
 	sCreateDBFileName = m_sSqlFileName.left(m_sSqlFileName.length() - 4) + ".db";
@@ -171,8 +176,10 @@ void widgetCreateDB::doCreateDBCurrentChanged()
 		return;
 	}
 	QString sCurFile = ui.cbCreateDB->currentText();
-	if (sCurFile.isEmpty() || m_sCreateDBFileName == sCurFile) return;
-	if (sCurFile.right(3) != ".db") return;
+	if (sCurFile.isEmpty() 
+		|| m_sCreateDBFileName == sCurFile
+		|| sCurFile.right(3) != ".db") 
+		return;
 	addFileName(ui.cbCreateDB, m_slCreateDBFileName
 		, sCurFile, SETTING_NAME_CREATEDB_FIELPATH);
 	m_sCreateDBFileName = sCurFile;
@@ -492,7 +499,14 @@ void widgetCreateDB::clearFileNameList(
 		cb->addItem(QIcon(RS_ICON_Clear), QSL("清楚下拉框"), QSL("清楚下拉框"));
 		m_pConfigIni->setValue(sCIParamName, "");
 	}
-	cb->setCurrentIndex(-1);
+	if (cb == ui.cbCreateDB)
+	{
+		cb->setCurrentIndex(cb->findData(m_sCreateDBFileName));
+	}
+	else if (cb == ui.cbSqlFile)
+	{
+		cb->setCurrentIndex(cb->findData(m_sSqlFileName));
+	}
 	cb->blockSignals(false);
 }
 
@@ -542,4 +556,26 @@ bool widgetCreateDB::maybeSave()  // 是否需要保存
 			return false;
 	}
 	return true; // 如果文档没有更改过，则直接返回true
+}
+
+bool widgetCreateDB::eventFilter(QObject *obj, QEvent * evt)
+{
+	if (evt->type() == QEvent::KeyPress)
+	{
+		QKeyEvent* ev = static_cast<QKeyEvent*>(evt);
+		if (ev->key() == Qt::Key_Return)
+		{
+			if (obj == ui.cbCreateDB)
+			{
+				doCreateDBFileNameEditingFinished();
+				return true;
+			}
+			else if (obj == ui.cbSqlFile)
+			{
+				doSqlFileNameEditingFinished();
+				return true;
+			}
+		}
+	}
+	return false;
 }

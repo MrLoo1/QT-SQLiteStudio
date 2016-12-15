@@ -1,6 +1,7 @@
 #include "sqlitestudio.h"
 #include "common.h"
-#include "ecbcipher.h"
+#include "ECBCipher.h"
+#include "CBCCipher.h"
 #include "widgetcreatedb.h"
 #include "widgetseedb.h"
 #include <QSettings>
@@ -28,7 +29,10 @@ void SQLiteStudio::setupUi()
 	// 设置窗口图标
 	setWindowIcon(QIcon(RS_ICON_WINDOW));
 	setWindowTitle(QSL("SQLiteStudio"));
+
+	//配置加密解密策略
 	m_pCripher = new ECBCipher(this);
+	//m_pCripher = new CBCCipher(this);
 
 	QFile styleFile(QSS_MAINWINDOW);
 	styleFile.open(QIODevice::ReadOnly);
@@ -56,6 +60,7 @@ void SQLiteStudio::setupSignalSlots()
 	connect(ui.btnCreateDB, SIGNAL(clicked()), this, SLOT(doBtnCreateDBClicked()));
 }
 
+/*读取配置文件*/
 void SQLiteStudio::createIni()
 {
 	QDir dir(QCoreApplication::applicationDirPath());
@@ -84,6 +89,7 @@ void SQLiteStudio::doBtnCreateDBClicked()
 
 void SQLiteStudio::closeEvent(QCloseEvent *event)
 {
+	/*密码加密后写配置文件*/
 	QString encod = "";
 	if (!ui.edPassword->text().isEmpty())
 	{
@@ -96,30 +102,33 @@ void SQLiteStudio::closeEvent(QCloseEvent *event)
 
 QString SQLiteStudio::encodePW(QString clearpw)
 {
-	QString szEnPwd = "";
-	if (m_pCripher->DES_Encrypt(clearpw, PW_KEY, szEnPwd) != ENCRYPT_SUCCESS)
+	QString encoPW = "";
+	if (m_pCripher->DES_Encrypt(clearpw, PW_KEY, encoPW) != ENCRYPT_SUCCESS)
 	{
 		QMessageBox::critical(this,QSL("加密失败"),QSL("加密用户密码失败."));
 	}
-	return szEnPwd;
+	return encoPW;
 }
 
 QString SQLiteStudio::decodePW(QString cryptpw)
 {
-	QString szEnPwd = "";
-	if (m_pCripher->DES_Decrypt(cryptpw, PW_KEY, szEnPwd) != DECRYPT_SUCCESS)
+	QString clePW = "";
+	if (m_pCripher->DES_Decrypt(cryptpw, PW_KEY, clePW) != DECRYPT_SUCCESS)
 	{
 		QMessageBox::critical(this, QSL("解密失败"), QSL("解密用户密码失败."));
 	}
-	return szEnPwd;
+	return clePW;
 }
 
 void SQLiteStudio::initEdPW()
 {
+	/*设置密码输入框输入限制*/
 	QRegExp rx("\\S{0,32}");
 	QValidator* vaPassword = new QRegExpValidator(rx, this);
 	ui.edPassword->setValidator(vaPassword);
 	ui.edPassword->setEchoMode(QLineEdit::Password);
+
+	/*读取配置文件中的密码*/
 	QString decod = "";
 	QString encoPassword = m_pConfigIni->value(SETTING_NAME_PASSWORD_PATH).toString();
 	if (!encoPassword.isEmpty())

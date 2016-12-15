@@ -44,6 +44,8 @@ private slots:
 protected:
 	void closeEvent(QCloseEvent *event); // 关闭事件
 
+	bool eventFilter(QObject *obj, QEvent * evt);
+
 private:
 	/* 初始化界面 */
 	void setupUi();
