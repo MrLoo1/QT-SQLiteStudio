@@ -45,7 +45,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;QT_SQL_LIB;SQLITE_HAS_CODEC=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\OpenSSL-Win32\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENSSL_DIR)\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -55,7 +55,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>D:\OpenSSL-Win32\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OPENSSL_DIR)\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;Qt5Sqld.lib;libssl.lib;libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -161,7 +161,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing Cipher.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-ID:\OpenSSL-Win32\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-I$(OPENSSL_DIR)\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing Cipher.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -171,7 +171,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing CBCCipher.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1 "-ID:\OpenSSL-Win32\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-I$(OPENSSL_DIR)\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing CBCCipher.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -181,7 +181,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ECBCipher.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1 "-ID:\OpenSSL-Win32\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-I$(OPENSSL_DIR)\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing ECBCipher.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -192,7 +192,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing sqlitestudio.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-ID:\OpenSSL-Win32\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-I$(OPENSSL_DIR)\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing sqlitestudio.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -202,7 +202,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing widgetseedb.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-ID:\OpenSSL-Win32\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-I$(OPENSSL_DIR)\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing widgetseedb.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -212,7 +212,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing widgetcreatedb.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-ID:\OpenSSL-Win32\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-I$(OPENSSL_DIR)\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing widgetcreatedb.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -222,7 +222,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing queryseedb.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-ID:\OpenSSL-Win32\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-I$(OPENSSL_DIR)\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing queryseedb.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -236,7 +236,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ktabbutton.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-ID:\OpenSSL-Win32\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-I$(OPENSSL_DIR)\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing ktabbutton.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -246,7 +246,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing sqltablemodel.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-ID:\OpenSSL-Win32\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DQT_SQL_LIB -DSQLITE_HAS_CODEC=1  "-I$(OPENSSL_DIR)\include" "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtSql"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing sqltablemodel.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
