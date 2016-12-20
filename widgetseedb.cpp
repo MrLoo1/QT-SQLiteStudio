@@ -114,8 +114,11 @@ void widgetSeeDB::doActDropTable()
 		KTabButton* pBtn = m_hashTableNameBtn.value(sTableName);
 		if (pBtn) pTbv = qobject_cast<QTableView*>(pBtn->userObject());
 		if (pTbv) pStm = qobject_cast<QSqlTableModel*>(pTbv->model());
-		if (QMessageBox::information(this, QSL("drop table"), QSL("Are you sure to drop table [%1]?").arg(sTableName)
-			, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+		QMessageBox box(QMessageBox::Information, QSL("删除表"), QSL("确定要删除[%1]表吗").arg(sTableName));
+		box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+		box.setButtonText(QMessageBox::Yes, QSL("确 定"));
+		box.setButtonText(QMessageBox::No, QSL("取 消"));
+		if (box.exec() == QMessageBox::Yes)
 		{
 			QSqlQuery oSqlQuery(m_sdbSeeDB);
 			QString sSQL = QSL("drop table %1;").arg(sTableName);
@@ -351,8 +354,11 @@ void widgetSeeDB::addFileName(
 void widgetSeeDB::doClearFileNameList()
 {
 	ui.cbSeeDB->blockSignals(true);
-	if (QMessageBox::information(this, QSL("清空文件列表"), QSL("确定清空[%1]文件列表吗？").arg(QSL("查看DB")),
-		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+	QMessageBox box(QMessageBox::Information, QSL("清空文件列表"), QSL("确定清空[%1]文件列表吗").arg(QSL("查看DB")));
+	box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+	box.setButtonText(QMessageBox::Yes, QSL("确 定"));
+	box.setButtonText(QMessageBox::No, QSL("取 消"));
+	if (box.exec() == QMessageBox::Yes)
 	{
 		m_slSeeDBFileName.clear();
 		ui.cbSeeDB->clear();
@@ -528,8 +534,11 @@ void widgetSeeDB::doBtnDeleteClicked()
 void widgetSeeDB::doBtnCommitClicked()
 {
 	QSqlTableModel* sqlTableModel = getSqlTableModel(m_sCurSelectTableName);
-	if (sqlTableModel != nullptr && (QMessageBox::information(this, QSL("提交修改"), QSL("确定保存对[%1]表的修改吗？").arg(m_sCurSelectTableName),
-		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes))
+	QMessageBox box(QMessageBox::Information, QSL("提交修改"), QSL("确定保存对[%1]表的修改吗？").arg(m_sCurSelectTableName));
+	box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+	box.setButtonText(QMessageBox::Yes, QSL("确 定"));
+	box.setButtonText(QMessageBox::No, QSL("取 消"));
+	if (sqlTableModel != nullptr && (box.exec() == QMessageBox::Yes))
 	{
 		if (!sqlTableModel->submitAll())
 		{
@@ -542,8 +551,11 @@ void widgetSeeDB::doBtnCommitClicked()
 void widgetSeeDB::doBtnRevertClicked()
 {
 	QSqlTableModel* sqlTableModel = getSqlTableModel(m_sCurSelectTableName);
-	if (sqlTableModel != nullptr && (QMessageBox::information(this, QSL("撤销修改"), QSL("确定撤销对[%1]表的修改吗？").arg(m_sCurSelectTableName),
-		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes))
+	QMessageBox box(QMessageBox::Information, QSL("撤销修改"), QSL("确定撤销对[%1]表的修改吗？").arg(m_sCurSelectTableName));
+	box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+	box.setButtonText(QMessageBox::Yes, QSL("确 定"));
+	box.setButtonText(QMessageBox::No, QSL("取 消"));
+	if (sqlTableModel != nullptr && (box.exec() == QMessageBox::Yes))
 	{
 		sqlTableModel->revertAll();
 	}

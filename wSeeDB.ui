@@ -42,19 +42,19 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
-       <number>6</number>
+       <number>3</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <item>
        <widget class="QLabel" name="lbSeeDB">
@@ -91,6 +91,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnClose">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="text">
          <string>关闭数据库</string>
         </property>
@@ -192,6 +198,12 @@
           </property>
           <item>
            <widget class="QCheckBox" name="chbLock">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>锁定</string>
             </property>
@@ -212,6 +224,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="btnRefreshSeeDB">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>刷新</string>
             </property>
@@ -226,6 +244,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="btnInsert">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>插入</string>
             </property>
@@ -233,6 +257,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="btnDelete">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>删除</string>
             </property>
@@ -247,6 +277,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="btnCommit">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>保存</string>
             </property>
@@ -254,6 +290,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="btnRevert">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>撤销</string>
             </property>

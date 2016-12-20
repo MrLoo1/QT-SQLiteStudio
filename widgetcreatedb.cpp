@@ -12,6 +12,7 @@
 #include <QDebug>
 #include <QCloseEvent>
 #include <QMimeData>
+#include <QPushButton>
 widgetCreateDB::widgetCreateDB(QWidget *parent, QSettings* set, QLineEdit* edPw)
 	: QWidget(parent), m_pConfigIni(set), m_pedPw(edPw)
 {
@@ -46,7 +47,7 @@ void widgetCreateDB::setupUi()
 	m_actSave = new QAction(QSL("另存为"), m_menu);
 	m_menu->addAction(m_actSave);
 	ui.btnSave->setMenu(m_menu);
-
+	
 	// 设置表格行高
 	m_nTableDataRowHeight = ROWHEIGHT_DEF;
 
@@ -491,8 +492,11 @@ void widgetCreateDB::clearFileNameList(
 	const QString& sCIParamName)
 {
 	cb->blockSignals(true);
-	if (QMessageBox::information(this, QSL("清空文件列表"), QSL("确定清空[%1]文件列表吗？").arg(sClearFileListName),
-		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+	QMessageBox box(QMessageBox::Information, QSL("清空文件列表"), QSL("确定清空[%1]文件列表吗？").arg(sClearFileListName));
+	box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+	box.setButtonText(QMessageBox::Yes, QSL("确 定"));
+	box.setButtonText(QMessageBox::No, QSL("取 消"));
+	if (box.exec() == QMessageBox::Yes)
 	{
 		slFileName.clear();
 		cb->clear();
@@ -513,9 +517,11 @@ void widgetCreateDB::clearFileNameList(
 /*sql文件改变槽*/
 void widgetCreateDB::doAfterSqlFileChange(const QString& path)
 {
-	if (QMessageBox::information(this, QSL("Infomation")
-		, QSL("The sql file [%1] has been changed !\nDo you want to reload it?").arg(path),
-		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+	QMessageBox box(QMessageBox::Information, QSL("文件修改"), QSL("SQL文件[%1]已被修改。\n请问是否需要重新加载？").arg(path));
+	box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+	box.setButtonText(QMessageBox::Yes, QSL("确 定"));
+	box.setButtonText(QMessageBox::No, QSL("取 消"));
+	if (box.exec() == QMessageBox::Yes)
 	{
 		doBtnRefreshClicked();
 	}
