@@ -99,6 +99,9 @@ CRYPTO_STATUS ECBCipher::DES_Decrypt(const QString ciphertext, const QString key
 	}
 
 	cleartext.clear();
+	/*这里第二个参数不用填，原因是Cleartext不是8倍数个字节的话，
+	最后会用几个`\0`补齐，这时如果用了 QString::fromLatin1(Cleartext.c_str()，Cleartext.length())形式的话，
+	cleartext在最后追加空格，改变文本内容（也就多几个空格）*/
 	cleartext = QString::fromLatin1(Cleartext.c_str());
 	return DECRYPT_SUCCESS;
 }

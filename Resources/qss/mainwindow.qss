@@ -635,13 +635,13 @@ QListView::item:hover {
 								stop: 1.000 rgb(255, 243, 208));
 }
 QListView::item:selected {
-  color: rgb(0, 0, 0);
-  border: 1px solid rgb(255, 183, 0);
-	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,	
-                stop: 0.000 rgb(253, 238, 222),
-								stop: 0.400 rgb(253, 224, 190),
-								stop: 0.401 rgb(255, 206, 105)
-								stop: 1.000 rgb(255, 235, 173));
+    color: rgb(0, 0, 0);
+    border: 1px solid rgb(255, 183, 0);
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,	
+        stop: 0.000 rgb(253, 238, 222),
+		stop: 0.400 rgb(253, 224, 190),
+		stop: 0.401 rgb(255, 206, 105)
+		stop: 1.000 rgb(255, 235, 173));
 }
 
 

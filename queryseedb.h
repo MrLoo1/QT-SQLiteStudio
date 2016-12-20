@@ -18,8 +18,7 @@ private:
 	void setupSignalSlots();
 
 private slots:
-	/*查询combox槽*/
-	void doAfterQryChange();
+	/*查询输入槽*/
 	void doAfterQryEdited();
 
 	/*查询按钮槽*/

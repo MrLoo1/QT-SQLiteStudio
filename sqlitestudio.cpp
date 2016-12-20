@@ -29,6 +29,10 @@ void SQLiteStudio::setupUi()
 	// 设置窗口图标
 	setWindowIcon(QIcon(RS_ICON_WINDOW));
 	setWindowTitle(QSL("SQLiteStudio"));
+	Qt::WindowFlags flags = Qt::Dialog;
+	flags |= Qt::WindowMinMaxButtonsHint;
+	flags |= Qt::WindowCloseButtonHint;
+	setWindowFlags(flags);
 
 	//配置加密解密策略
 	m_pCripher = new ECBCipher(this);

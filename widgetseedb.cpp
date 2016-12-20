@@ -444,8 +444,6 @@ void widgetSeeDB::loadSeeDBTable()
 			pCurItem = pListWidgetItem;
 		}
 	}
-
-	if (pCurItem) ui.lwDBStructure->setCurrentItem(pCurItem);
 }
 
 void widgetSeeDB::doSwitchShowTable()
@@ -492,7 +490,13 @@ void widgetSeeDB::doBtnSelectSeeDBClicked()
 
 void widgetSeeDB::doBtnRefreshSeeDBClicked()
 {
-	selectedSeeDB();
+	int row = ui.lwDBStructure->currentRow();
+	QString sTableName = ui.lwDBStructure->item(row)->data(Qt::DisplayRole).toString();
+	QTableView* pTbv = nullptr;
+	pTbv = qobject_cast<QTableView*>(m_hashTableNameBtn[sTableName]->userObject());
+	deleteTableData(pTbv, m_hashTableNameBtn[sTableName]);
+	m_hashTableNameBtn.remove(sTableName);
+	showTableData(sTableName);
 }
 
 void widgetSeeDB::doBtnInsertClicked()
@@ -626,6 +630,7 @@ void widgetSeeDB::setSeeDBBtn(bool enable, bool isCheckClick)
 	ui.btnDelete->setEnabled(enable);
 	ui.btnCommit->setEnabled(enable);
 	ui.btnRevert->setEnabled(enable);
+	ui.btnRefreshSeeDB->setEnabled(enable);
 }
 
 void widgetSeeDB::dragEnterEvent(QDragEnterEvent *event)

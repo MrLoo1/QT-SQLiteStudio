@@ -12,14 +12,7 @@ QuerySeeDB::QuerySeeDB(const QStringList& fieldnames, QString* qrytext, QString*
 
 QuerySeeDB::~QuerySeeDB()
 {
-	if (m_sQryText)
-	{
-		delete m_sQryText;
-	}
-	if (m_sFieldname)
-	{
-		delete m_sFieldname;
-	}
+
 }
 
 void QuerySeeDB::setupUI()
@@ -35,7 +28,6 @@ void QuerySeeDB::setupSignalSlots()
 {
 	connect(ui.btnQry, SIGNAL(clicked()), this, SLOT(doBtnQryClicked()));
 	
-	connect(ui.edQry, SIGNAL(currentIndexChanged(int)), this, SLOT(doAfterQryChange()));
 	connect(ui.edQry, SIGNAL(editingFinished()), this, SLOT(doAfterQryEdited()));
 
 	connect(ui.cbFieldName, SIGNAL(currentIndexChanged(int)), this, SLOT(doAfterFieldNameChange()));
@@ -47,16 +39,10 @@ void QuerySeeDB::doAfterFieldNameChange()
 	ui.lbQryTip->setText(QSL("请输入要查找的[%1]列内容:").arg(ui.cbFieldName->currentText()));
 }
 
-/*查询combox槽*/
-void QuerySeeDB::doAfterQryChange()
+void QuerySeeDB::doAfterQryEdited()
 {
 	*m_sQryText = ui.edQry->text();
 	*m_sFieldname = ui.cbFieldName->currentText();
-}
-
-void QuerySeeDB::doAfterQryEdited()
-{
-	doAfterQryChange();
 }
 
 /*查询按钮槽*/
