@@ -46,6 +46,11 @@ protected:
 
 	bool eventFilter(QObject *obj, QEvent * evt);
 
+	/*实现拖入文件*/
+	void dragEnterEvent(QDragEnterEvent *event);
+
+	void dropEvent(QDropEvent *event);
+
 private:
 	/* 初始化界面 */
 	void setupUi();

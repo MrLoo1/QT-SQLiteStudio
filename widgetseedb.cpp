@@ -13,7 +13,7 @@
 #include <QSettings>
 #include <QDebug>
 #include <QCheckBox>
-
+#include <QMimeData>
 widgetSeeDB::widgetSeeDB(QWidget *parent, QSettings* set, QLineEdit* edPw)
 	: QWidget(parent), m_pConfigIni(set), m_pedPw(edPw)
 {
@@ -626,4 +626,23 @@ void widgetSeeDB::setSeeDBBtn(bool enable, bool isCheckClick)
 	ui.btnDelete->setEnabled(enable);
 	ui.btnCommit->setEnabled(enable);
 	ui.btnRevert->setEnabled(enable);
+}
+
+void widgetSeeDB::dragEnterEvent(QDragEnterEvent *event)
+{
+	//如果为文件，则支持拖放
+	if (event->mimeData()->hasFormat("text/uri-list"))
+		event->acceptProposedAction();
+}
+
+void widgetSeeDB::dropEvent(QDropEvent *event)
+{
+	QList<QUrl> urls = event->mimeData()->urls();
+	if (urls.isEmpty())
+		return;
+
+	//往文本框中追加文件名
+	QString file_name = urls[0].toLocalFile();
+	ui.cbSeeDB->setCurrentText(file_name);
+	doSeeDBFileNameEditingFinished();
 }

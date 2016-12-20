@@ -11,7 +11,7 @@
 #include <QSqlError>
 #include <QDebug>
 #include <QCloseEvent>
-
+#include <QMimeData>
 widgetCreateDB::widgetCreateDB(QWidget *parent, QSettings* set, QLineEdit* edPw)
 	: QWidget(parent), m_pConfigIni(set), m_pedPw(edPw)
 {
@@ -381,7 +381,7 @@ void widgetCreateDB::doBtnSelectCreatDbClicked()
 		tr("Select Save Database File"), "/home/" + ui.cbCreateDB->currentData().toString(), tr("Database Files (*.db)"));
 	if (!sSelectCreateDBFileName.isEmpty() && m_sCreateDBFileName != sSelectCreateDBFileName)
 	{
-		ui.cbCreateDB->setCurrentText(m_sCreateDBFileName);
+		ui.cbCreateDB->setCurrentText(sSelectCreateDBFileName);
 		doCreateDBCurrentChanged();
 	}
 }
@@ -578,4 +578,23 @@ bool widgetCreateDB::eventFilter(QObject *obj, QEvent * evt)
 		}
 	}
 	return false;
+}
+
+void widgetCreateDB::dragEnterEvent(QDragEnterEvent *event)
+{
+	//如果为文件，则支持拖放
+	if (event->mimeData()->hasFormat("text/uri-list"))
+		event->acceptProposedAction();
+}
+
+void widgetCreateDB::dropEvent(QDropEvent *event)
+{
+	QList<QUrl> urls = event->mimeData()->urls();
+	if (urls.isEmpty())
+		return;
+
+	//往文本框中追加文件名
+	QString file_name = urls[0].toLocalFile();
+	ui.cbSqlFile->setCurrentText(file_name);
+	doSqlFileNameEditingFinished();
 }

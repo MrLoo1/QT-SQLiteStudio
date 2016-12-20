@@ -30,16 +30,13 @@ CRYPTO_STATUS ECBCipher::DES_Encrypt(const QString cleartext, const QString key,
 
 	const_DES_cblock inputText;
 	DES_cblock outputText;
-	vector<unsigned char> vecCiphertext;
-	unsigned char tmp[8];
+	string Ciphertext;
 
 	for (int i = 0; i < cleartext.length() / 8; i++) {
 		memcpy(inputText, cleartext.toLatin1().data() + i * 8, 8);
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_ENCRYPT);
-		memcpy(tmp, outputText, 8);
-
 		for (int j = 0; j < 8; j++)
-			vecCiphertext.push_back(tmp[j]);
+			Ciphertext.push_back(outputText[j]);
 	}
 
 	if (cleartext.length() % 8 != 0) {
@@ -49,15 +46,13 @@ CRYPTO_STATUS ECBCipher::DES_Encrypt(const QString cleartext, const QString key,
 		memcpy(inputText, cleartext.toLatin1().data() + tmp1, tmp2);
 
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_ENCRYPT);
-		memcpy(tmp, outputText, 8);
 
 		for (int j = 0; j < 8; j++)
-			vecCiphertext.push_back(tmp[j]);
+			Ciphertext.push_back(outputText[j]);
 	}
 
 	ciphertext.clear();
-	string s = string(vecCiphertext.begin(), vecCiphertext.end());
-	ciphertext = QString::fromLatin1(s.c_str(), s.length());
+	ciphertext = QString::fromLatin1(Ciphertext.c_str(), Ciphertext.length());
 
 	return ENCRYPT_SUCCESS;
 }
@@ -81,16 +76,14 @@ CRYPTO_STATUS ECBCipher::DES_Decrypt(const QString ciphertext, const QString key
 
 	const_DES_cblock inputText;
 	DES_cblock outputText;
-	vector<unsigned char> vecCleartext;
-	unsigned char tmp[8];
+	string Cleartext;
 
 	for (int i = 0; i < ciphertext.length() / 8; i++) {
 		memcpy(inputText, ciphertext.toLatin1().data() + i * 8, 8);
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_DECRYPT);
-		memcpy(tmp, outputText, 8);
 
 		for (int j = 0; j < 8; j++)
-			vecCleartext.push_back(tmp[j]);
+			Cleartext.push_back(outputText[j]);
 	}
 
 	if (ciphertext.length() % 8 != 0) {
@@ -100,14 +93,12 @@ CRYPTO_STATUS ECBCipher::DES_Decrypt(const QString ciphertext, const QString key
 		memcpy(inputText, ciphertext.toLatin1().data() + tmp1, tmp2);
 
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_DECRYPT);
-		memcpy(tmp, outputText, 8);
 
 		for (int j = 0; j < 8; j++)
-			vecCleartext.push_back(tmp[j]);
+			Cleartext.push_back(outputText[j]);
 	}
 
 	cleartext.clear();
-	string s = string(vecCleartext.begin(), vecCleartext.end());
-	cleartext = QString::fromLatin1(s.c_str());
+	cleartext = QString::fromLatin1(Cleartext.c_str());
 	return DECRYPT_SUCCESS;
 }

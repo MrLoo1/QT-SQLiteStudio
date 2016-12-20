@@ -18,9 +18,12 @@ class widgetSeeDB : public QWidget
 public:
 	widgetSeeDB(QWidget *parent, QSettings* set,QLineEdit* edPw);
 	~widgetSeeDB();
-
-	/*事件过滤器*/
+protected:
+		/*事件过滤器*/
 	bool eventFilter(QObject *, QEvent *);
+	/*实现拖入文件*/
+	void dragEnterEvent(QDragEnterEvent *event);
+	void dropEvent(QDropEvent *event);
 
 private slots:
 	/* 查看DB路径修改 */

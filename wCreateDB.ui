@@ -10,6 +10,9 @@
     <height>585</height>
    </rect>
   </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>生成DB</string>
   </property>
@@ -230,7 +233,11 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QTextEdit" name="edSql"/>
+    <widget class="QTextEdit" name="edSql">
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
    <item row="2" column="0">
     <widget class="QProgressBar" name="pbExecSql">
