@@ -7,6 +7,7 @@
 * 本工具暂时运用了openssl的des算法保存密码，所以要求你的电脑有安装openssl并配置好环境变量
 
 **[OPENSSL下载](http://www.openssl.com/download.html)**
+
 **[OPENSSL环境变量配置](http://cheng668.com/2016/12/14/OPENSSL-Develop-Config/)**
 
 * 工具通过/Resources/qss/mainwindow.qss设置样式，个人可以根据个人审美对样式表进行修改
