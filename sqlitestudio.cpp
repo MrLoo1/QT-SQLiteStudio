@@ -15,11 +15,8 @@ SQLiteStudio::SQLiteStudio(QWidget *parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
-	std::string str = "cheng6";
-	QString qstr = QString::fromStdString(str);
-	qDebug() << qstr;
-	//setupUi();
-	//setupSignalSlots();
+	setupUi();
+	setupSignalSlots();
 }
 
 SQLiteStudio::~SQLiteStudio()
@@ -129,7 +126,7 @@ void SQLiteStudio::initEdPW()
 	QRegExp rx("\\S{0,32}");
 	QValidator* vaPassword = new QRegExpValidator(rx, this);
 	ui.edPassword->setValidator(vaPassword);
-	//ui.edPassword->setEchoMode(QLineEdit::Password);
+	ui.edPassword->setEchoMode(QLineEdit::Password);
 
 	/*读取配置文件中的密码*/
 	QString decod = "";
