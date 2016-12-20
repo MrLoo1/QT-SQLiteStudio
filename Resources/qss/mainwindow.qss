@@ -58,7 +58,7 @@ QToolButton#win-max:hover
 QToolButton#win-min:hover
 {
   border-style:hidden;
-
+}
 /*------------------------------------------------------------------------------
   ·Ö×é¿ò(QGroupBox)
 ------------------------------------------------------------------------------*/
@@ -192,22 +192,22 @@ QCheckBox:disabled
 QCheckBox::indicator:unchecked {
   width: 16px;
   height: 16px;
-  image: url(:/kamc/img/widget/checkbox_unchecked);
+  image: url(:/SQLiteStudio/Resources/images/checkbox_unchecked);
 }
 QCheckBox::indicator:unchecked:disabled {
-  image: url(:/kamc/img/widget/checkbox_unchecked_disabled);
+  image: url(:/SQLiteStudio/Resources/images/checkbox_unchecked_disabled);
 }
 QCheckBox::indicator:unchecked:hover {
-  image: url(:/kamc/img/widget/checkbox_unchecked_hover);
+  image: url(:/SQLiteStudio/Resources/images/checkbox_unchecked_hover);
 }
 QCheckBox::indicator:checked {
-  image: url(:/kamc/img/widget/checkbox_checked);
+  image: url(:/SQLiteStudio/Resources/images/checkbox_checked);
 }
 QCheckBox::indicator:checked:disabled {
-  image: url(:/kamc/img/widget/checkbox_checked_disabled);
+  image: url(:/SQLiteStudio/Resources/images/checkbox_checked_disabled);
 }
 QCheckBox::indicator:checked:hover {
-  image: url(:/kamc/img/widget/checkbox_checked_hover);
+  image: url(:/SQLiteStudio/Resources/images/checkbox_checked_hover);
 }
   
 
@@ -293,7 +293,7 @@ QComboBox::drop-down:hover
 }
 QComboBox::down-arrow 
 {
-  image: url(:/kamc/img/widget/drop_arrow_down);
+  image: url(:/SQLiteStudio/Resources/images/drop_arrow_down);
 }
 QComboBox::down-arrow:on 
 {
@@ -327,7 +327,7 @@ QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover, QTimeEdit::up-button
 }
 QSpinBox::up-arrow, QDoubleSpinBox::up-arrow, QTimeEdit::up-arrow, QDateTimeEdit::up-arrow 
 {
-  border-image: url(:/kamc/img/widget/spin_arrow_up);
+  border-image: url(:/SQLiteStudio/Resources/images/spin_arrow_up);
   width: 7px;
   height: 4px;
 }
@@ -344,7 +344,7 @@ QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover, QTimeEdit::down-
 }
 QSpinBox::down-arrow, QDoubleSpinBox::down-arrow, QTimeEdit::down-arrow, QDateTimeEdit::down-arrow 
 {
-  image: url(:/kamc/img/widget/spin_arrow_down);
+  image: url(:/SQLiteStudio/Resources/images/spin_arrow_down);
   width: 7px;
   height: 4px;
 }
@@ -392,14 +392,14 @@ QScrollBar::handle:horizontal:hover {
 QScrollBar::sub-line:horizontal {
     border-top: 1px solid rgb(209,226,233);
     background: rgb(242,247,251);
-    image: url(:/kamc/img/widget/scroll_arrow_left);
+    image: url(:/SQLiteStudio/Resources/images/scroll_arrow_left);
     width: 19px;
     subcontrol-position: left;
     subcontrol-origin: margin;
 }
 QScrollBar::sub-line:horizontal:hover {
     border-right: 1px solid rgb(209,226,233);
-    image: url(:/kamc/img/widget/scroll_arrow_left_hover);
+    image: url(:/SQLiteStudio/Resources/images/scroll_arrow_left_hover);
     background: rgb(172,204,234);
     width: 18px;
 }
@@ -409,7 +409,7 @@ QScrollBar::sub-line:horizontal:pressed {
 QScrollBar::add-line:horizontal {
     border-top: 1px solid rgb(209,226,233);
     background: rgb(242,247,251);
-    image: url(:/kamc/img/widget/scroll_arrow_right);
+    image: url(:/SQLiteStudio/Resources/images/scroll_arrow_right);
     width: 19px;
     subcontrol-position: right;
     subcontrol-origin: margin;
@@ -417,7 +417,7 @@ QScrollBar::add-line:horizontal {
 QScrollBar::add-line:horizontal:hover {
     border-left: 1px solid rgb(209,226,233);
     border-right: 1px solid rgb(209,226,233);
-    image: url(:/kamc/img/widget/scroll_arrow_right_hover);
+    image: url(:/SQLiteStudio/Resources/images/scroll_arrow_right_hover);
     background: rgb(172,204,234);
     width: 17px;
 }
@@ -444,14 +444,14 @@ QScrollBar::handle:vertical:hover {
 QScrollBar::sub-line:vertical {
     border-left: 1px solid rgb(209,226,233);
     background: rgb(242,247,251);
-    image: url(:/kamc/img/widget/scroll_arrow_up);
+    image: url(:/SQLiteStudio/Resources/images/scroll_arrow_up);
     height: 19px;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
 QScrollBar::sub-line:vertical:hover {
     border-bottom: 1px solid rgb(209,226,233);
-    image: url(:/kamc/img/widget/scroll_arrow_up_hover);
+    image: url(:/SQLiteStudio/Resources/images/scroll_arrow_up_hover);
     background: rgb(172,204,234);
     height: 18px;
 }
@@ -461,7 +461,7 @@ QScrollBar::sub-line:vertical:pressed {
 QScrollBar::add-line:vertical {
     border-left: 1px solid rgb(209,226,233);
     background: rgb(242,247,251);
-    image: url(:/kamc/img/widget/scroll_arrow_down);
+    image: url(:/SQLiteStudio/Resources/images/scroll_arrow_down);
     height: 19px;
     subcontrol-position: bottom;
     subcontrol-origin: margin;
@@ -469,7 +469,7 @@ QScrollBar::add-line:vertical {
 QScrollBar::add-line:vertical:hover {
     border-top: 1px solid rgb(209,226,233);
     border-bottom: 1px solid rgb(209,226,233);
-    image: url(:/kamc/img/widget/scroll_arrow_down_hover);
+    image: url(:/SQLiteStudio/Resources/images/scroll_arrow_down_hover);
     background: rgb(172,204,234);
     height: 17px;
 }
